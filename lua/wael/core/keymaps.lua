@@ -3,15 +3,18 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
+keymap.set("v", "J", ":m'>+1<CR>gv=gv", { desc = "move" }) -- clear search highlights
+keymap.set("v", "K", ":m'<-2<CR>gv=gv", { desc = "move" }) -- clear search highlights
 ---------------------
 -- General Keymaps -------------------
 
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
--- clear search highlights
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<C-d>", "<C-d>zz", { desc = "center" })
 
+keymap.set("n", "<C-u>", "<C-u>zz", { desc = "center" })
+keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 -- delete single character without copying into register
 -- keymap.set("n", "x", '"_x')
 
@@ -19,6 +22,7 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
 
+keymap.set("x", "<leader>p", '"_dP') -- decrement
 -- window management
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
