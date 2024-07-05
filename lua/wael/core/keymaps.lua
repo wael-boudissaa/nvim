@@ -22,6 +22,10 @@ keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 -- Use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
+keymap.set("i", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { desc = "window left" })
+keymap.set("i", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "window right" })
+keymap.set("i", "<C-j>", "<cmd> TmuxNavigateDown<CR>", { desc = "window down" })
+keymap.set("i", "<C-k>", "<cmd> TmuxNavigateUp<CR>", { desc = "window Up" })
 vim.opt.undofile = true
 -- Center the screen after scrolling
 keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Center screen after scrolling down" })
@@ -94,4 +98,4 @@ function _CompileAndRunCpp()
 end
 
 -- Map the function to a key (e.g., <leader>ex)
-vim.api.nvim_set_keymap("n", "<leader>eu", ":lua _CompileAndRunCpp()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>eu", ":w<CR> :lua _CompileAndRunCpp()<CR>", { noremap = true, silent = true })
