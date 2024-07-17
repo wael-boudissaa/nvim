@@ -3,6 +3,7 @@ vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true 
 vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
 
+vim.o.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
 vim.cmd([[
     augroup MyColors
