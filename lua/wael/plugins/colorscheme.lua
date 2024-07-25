@@ -9,25 +9,123 @@
 -- 		vim.cmd.colorscheme("gruvbox-material")
 -- 	end,
 -- }
+-- -- Default options:
+-- setup must be called before loadingr
+--NOTE: vs code code
+--FIXEME:
+--TEST:
+-- V
 return {
-
-	"olivercederborg/poimandres.nvim",
+	"Mofiqul/vscode.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		require("poimandres").setup({
-			-- leave this setup function empty for default config
-			-- or refer to the configuration section
-			-- for configuration options
-		})
-	end,
+		-- Function to switch between light and dark themes
+		local function switch_vscode_theme()
+			if vim.o.background == "dark" then
+				vim.o.background = "light"
+				require("vscode").load("light")
+				print("Switched to vscode light theme")
+			else
+				vim.o.background = "dark"
+				require("vscode").load("dark")
+				print("Switched to vscode dark theme")
+			end
+		end
 
-	-- optionally set the colorscheme within lazy config
-	init = function()
-		vim.cmd("colorscheme poimandres")
+		-- Create a user command for switching themes
+		vim.api.nvim_create_user_command("SwitchVscodeTheme", switch_vscode_theme, {})
+
+		-- Optionally set a keybinding for switching themes
+		vim.api.nvim_set_keymap("n", "<leader>kt", ":SwitchVscodeTheme<CR>", { noremap = true, silent = true })
+
+		-- Load the initial theme
+		vim.o.background = "dark"
+		require("vscode").load("dark")
+
+		-- Configure bufferline
+		-- require("bufferline").setup({
+		-- 	options = {
+		-- 		buffer_close_icon = "",
+		-- 		close_command = "bdelete %d",
+		-- 		close_icon = "",
+		-- 		indicator = {
+		-- 			style = "icon",
+		-- 			icon = " ",
+		-- 		},
+		-- 		left_trunc_marker = "",
+		-- 		modified_icon = "●",
+		-- 		offsets = { { filetype = "NvimTree", text = "EXPLORER", text_align = "center" } },
+		-- 		right_mouse_command = "bdelete! %d",
+		-- 		right_trunc_marker = "",
+		-- 		show_close_icon = false,
+		-- 		show_tab_indicators = true,
+		-- 	},
+		-- 	highlights = {
+		-- 		fill = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "StatusLineNC" },
+		-- 		},
+		-- 		background = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "StatusLine" },
+		-- 		},
+		-- 		buffer_visible = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "Normal" },
+		-- 		},
+		-- 		buffer_selected = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "Normal" },
+		-- 		},
+		-- 		separator = {
+		-- 			fg = { attribute = "bg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "StatusLine" },
+		-- 		},
+		-- 		separator_selected = {
+		-- 			fg = { attribute = "fg", highlight = "Special" },
+		-- 			bg = { attribute = "bg", highlight = "Normal" },
+		-- 		},
+		-- 		separator_visible = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "StatusLineNC" },
+		-- 		},
+		-- 		close_button = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "StatusLine" },
+		-- 		},
+		-- 		close_button_selected = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "Normal" },
+		-- 		},
+		-- 		close_button_visible = {
+		-- 			fg = { attribute = "fg", highlight = "Normal" },
+		-- 			bg = { attribute = "bg", highlight = "Normal" },
+		-- 		},
+		-- 	},
+		-- })
 	end,
 }
 
+-- return {
+--
+-- 	"olivercederborg/poimandres.nvim",
+-- 	lazy = false,
+-- 	priority = 1000,
+-- 	config = function()
+-- 		require("poimandres").setup({
+-- 			-- leave this setup function empty for default config
+-- 			-- or refer to the configuration section
+-- 			-- for configuration options
+-- 		})
+-- 	end,
+--
+-- 	-- optionally set the colorscheme within lazy config
+-- 	init = function()
+-- 		vim.cmd("colorscheme poimandres")
+-- 	end,
+-- }
+--
 -- return {
 --
 -- 	"oxfist/night-owl.nvim",
