@@ -135,6 +135,9 @@ return {
 			["clangd"] = function()
 				lspconfig["clangd"].setup({
 					capabilities = capabilities,
+					cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=detailed" },
+					root_dir = lspconfig.util.root_pattern(".clangd", "compile_commands.json", ".git"),
+					single_file_support = true,
 					on_attach = function(client, bufnr)
 						local opts = { buffer = bufnr, silent = true }
 						-- Key mappings for LSP
@@ -144,9 +147,6 @@ return {
 						vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 						vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
 					end,
-					cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=detailed" },
-					root_dir = lspconfig.util.root_pattern(".clangd", "compile_commands.json", ".git"),
-					single_file_support = true,
 				})
 			end,
 			["tailwindcss"] = function()

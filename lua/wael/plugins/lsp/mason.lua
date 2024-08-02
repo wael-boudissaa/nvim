@@ -36,8 +36,10 @@ return {
 				"emmet_ls",
 				"prismals",
 				"pyright",
+				"clangd", -- added clangd for C++
 			},
 		})
+
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"prettier", -- prettier formatter
