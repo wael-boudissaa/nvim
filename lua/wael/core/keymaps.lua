@@ -2,9 +2,16 @@
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
+local harpoon = "harpoon.ui"
+keymap.set("n", "<C-y>", ":lua require('harpoon.ui').toggle_quick_menu() <CR>")
+keymap.set("n", "<C-e>", ":lua require('harpoon.mark').add_file()<CR>")
 
-keymap.set("n", "<C-o>", "o<ESC>")
+keymap.set("n", "m", ":lua require('harpoon.ui').nav_next()<CR>")
+keymap.set("n", "M", ":lua require('harpoon.ui').nav_prev()<CR>")
+
+keymap.set("n", "<C-p>", "o<ESC>")
 keymap.set("n", "<C-n>", "dd")
+
 vim.o.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
 vim.cmd([[
