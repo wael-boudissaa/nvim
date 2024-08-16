@@ -3,7 +3,7 @@
 -- 	lazy = false,
 -- 	priority = 1000,
 -- 	config = function()
--- 		-- Optionally configure and load the colorscheme
+-- 		-- optionally configure and load the colorscheme
 -- 		-- directly inside the plugin declaration.
 -- 		vim.g.gruvbox_material_enable_italic = true
 -- 		vim.cmd.colorscheme("gruvbox-material")
@@ -22,8 +22,8 @@
 --
 -- 				enable = {
 -- 					terminal = true,
--- 					legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
--- 					migrations = true, -- Handle deprecated options automatically
+-- 					legacy_highlights = true, -- improve compatibility for previous versions of neovim
+-- 					migrations = true, -- handle deprecated options automatically
 -- 				},
 --
 -- 				styles = {
@@ -64,17 +64,17 @@
 -- 				},
 --
 -- 				highlight_groups = {
--- 					-- Comment = { fg = "foam" },
--- 					-- VertSplit = { fg = "muted", bg = "muted" },
+-- 					-- comment = { fg = "foam" },
+-- 					-- vertsplit = { fg = "muted", bg = "muted" },
 -- 				},
 --
 -- 				before_highlight = function(group, highlight, palette)
--- 					-- Disable all undercurls
+-- 					-- disable all undercurls
 -- 					-- if highlight.undercurl then
 -- 					--     highlight.undercurl = false
 -- 					-- end
 -- 					--
--- 					-- Change palette colour
+-- 					-- change palette colour
 -- 					-- if highlight.fg == palette.pine then
 -- 					--     highlight.fg = palette.foam
 -- 					-- end
@@ -82,7 +82,7 @@
 -- 			})
 --
 -- 			-- vim.cmd("colorscheme rose-pine")
--- 			-- Uncomment one of the following to use a specific variant
+-- 			-- uncomment one of the following to use a specific variant
 -- 			vim.cmd("colorscheme rose-pine-main")
 -- 			-- vim.cmd("colorscheme rose-pine-moon")
 -- 			-- vim.cmd("colorscheme rose-pine-dawn")
@@ -90,37 +90,37 @@
 -- 	},
 -- }
 --
--- -- Default options:
+-- -- default options:
 -- setup must be called before loadingr
 -- return {
--- 	"Mofiqul/vscode.nvim",
+-- 	"mofiqul/vscode.nvim",
 -- 	lazy = false,
 -- 	priority = 1000,
 -- 	config = function()
--- 		-- Function to switch between light and dark themes
+-- 		-- function to switch between light and dark themes
 -- 		local function switch_vscode_theme()
 -- 			if vim.o.background == "dark" then
 -- 				vim.o.background = "light"
 -- 				require("vscode").load("light")
--- 				print("Switched to vscode light theme")
+-- 				print("switched to vscode light theme")
 -- 			else
 -- 				vim.o.background = "dark"
 -- 				require("vscode").load("dark")
--- 				print("Switched to vscode dark theme")
+-- 				print("switched to vscode dark theme")
 -- 			end
 -- 		end
 --
--- 		-- Create a user command for switching themes
--- 		vim.api.nvim_create_user_command("SwitchVscodeTheme", switch_vscode_theme, {})
+-- 		-- create a user command for switching themes
+-- 		vim.api.nvim_create_user_command("switchvscodetheme", switch_vscode_theme, {})
 --
--- 		-- Optionally set a keybinding for switching themes
--- 		vim.api.nvim_set_keymap("n", "<leader>kt", ":SwitchVscodeTheme<CR>", { noremap = true, silent = true })
+-- 		-- optionally set a keybinding for switching themes
+-- 		vim.api.nvim_set_keymap("n", "<leader>kt", ":switchvscodetheme<cr>", { noremap = true, silent = true })
 --
--- 		-- Load the initial theme
+-- 		-- load the initial theme
 -- 		vim.o.background = "dark"
 -- 		require("vscode").load("dark")
 --
--- 		-- Configure bufferline
+-- 		-- configure bufferline
 -- 		-- require("bufferline").setup({
 -- 		-- 	options = {
 -- 		-- 		buffer_close_icon = "",
@@ -132,7 +132,7 @@
 -- 		-- 		},
 -- 		-- 		left_trunc_marker = "",
 -- 		-- 		modified_icon = "●",
--- 		-- 		offsets = { { filetype = "NvimTree", text = "EXPLORER", text_align = "center" } },
+-- 		-- 		offsets = { { filetype = "nvimtree", text = "explorer", text_align = "center" } },
 -- 		-- 		right_mouse_command = "bdelete! %d",
 -- 		-- 		right_trunc_marker = "",
 -- 		-- 		show_close_icon = false,
@@ -140,84 +140,84 @@
 -- 		-- 	},
 -- 		-- 	highlights = {
 -- 		-- 		fill = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "StatusLineNC" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "statuslinenc" },
 -- 		-- 		},
 -- 		-- 		background = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "StatusLine" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "statusline" },
 -- 		-- 		},
 -- 		-- 		buffer_visible = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "Normal" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "normal" },
 -- 		-- 		},
 -- 		-- 		buffer_selected = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "Normal" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "normal" },
 -- 		-- 		},
 -- 		-- 		separator = {
--- 		-- 			fg = { attribute = "bg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "StatusLine" },
+-- 		-- 			fg = { attribute = "bg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "statusline" },
 -- 		-- 		},
 -- 		-- 		separator_selected = {
--- 		-- 			fg = { attribute = "fg", highlight = "Special" },
--- 		-- 			bg = { attribute = "bg", highlight = "Normal" },
+-- 		-- 			fg = { attribute = "fg", highlight = "special" },
+-- 		-- 			bg = { attribute = "bg", highlight = "normal" },
 -- 		-- 		},
 -- 		-- 		separator_visible = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "StatusLineNC" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "statuslinenc" },
 -- 		-- 		},
 -- 		-- 		close_button = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "StatusLine" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "statusline" },
 -- 		-- 		},
 -- 		-- 		close_button_selected = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "Normal" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "normal" },
 -- 		-- 		},
 -- 		-- 		close_button_visible = {
--- 		-- 			fg = { attribute = "fg", highlight = "Normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "Normal" },
+-- 		-- 			fg = { attribute = "fg", highlight = "normal" },
+-- 		-- 			bg = { attribute = "bg", highlight = "normal" },
 -- 		-- 		},
 -- 		-- 	},
 -- 		-- })
 -- 	end,
 -- }
 --
-return {
-
-	"olivercederborg/poimandres.nvim",
-	lazy = false,
-	priority = 1000,
-	config = function()
-		require("poimandres").setup({
-			-- leave this setup function empty for default config
-			-- or refer to the configuration section
-			-- for configuration options
-		})
-	end,
-
-	-- optionally set the colorscheme within lazy config
-	init = function()
-		vim.cmd("colorscheme poimandres")
-	end,
-}
+-- return {
+--
+-- 	"olivercederborg/poimandres.nvim",
+-- 	lazy = false,
+-- 	priority = 1000,
+-- 	config = function()
+-- 		require("poimandres").setup({
+-- 			-- leave this setup function empty for default config
+-- 			-- or refer to the configuration section
+-- 			-- for configuration options
+-- 		})
+-- 	end,
+--
+-- 	-- optionally set the colorscheme within lazy config
+-- 	init = function()
+-- 		vim.cmd("colorscheme poimandres")
+-- 	end,
+-- }
 --
 -- return {
 -- 	{
 -- 		"folke/tokyonight.nvim",
 -- 		priority = 1000, -- make sure to load this before all the other start plugins
--- 		config = function()
--- 			local bg = "#011628"
--- 			local bg_dark = "#011423"
--- 			local bg_highlight = "#143652"
--- 			local bg_search = "#0A64AC"
--- 			local bg_visual = "#275378"
--- 			local fg = "#CBE0F0"
--- 			local fg_dark = "#B4D0E9"
--- 			local fg_gutter = "#627E97"
--- 			local border = "#547998"
 --
+-- 		config = function()
+-- 			local bg = "#282a36" -- A dark, muted purple-blue background
+-- 			local bg_dark = "#1c1e26" -- A deeper almost black shade for darker areas
+-- 			local bg_highlight = "#44475a" -- A soft grayish-blue for highlights
+-- 			local bg_search = "#ff79c6" -- A vibrant pink for search highlights
+-- 			local bg_visual = "#bd93f9" -- A lavender shade for visual mode
+-- 			local fg = "#f8f8f2" -- A near-white color for foreground text
+-- 			local fg_dark = "#e0e0e0" -- A light gray for secondary text
+-- 			local fg_gutter = "#6272a4" -- A cool blue-gray for the gutter
+-- 			local border = "#50fa7b" -- A bright, fresh green for the border
 -- 			require("tokyonight").setup({
 -- 				style = "night",
 -- 				on_colors = function(colors)
@@ -243,15 +243,15 @@ return {
 -- 		end,
 -- 	},
 -- }
--- return {
--- 	--
--- 	"oxfist/night-owl.nvim",
---
--- 	lazy = false, -- make sure we load this during startup if it is your main colorscheme
--- 	priority = 1000, -- make sure to load this before all the other start plugins
--- 	config = function()
--- 		-- load the colorscheme here
--- 		require("night-owl").setup()
--- 		vim.cmd.colorscheme("night-owl")
--- 	end,
--- }
+return {
+	--
+	"oxfist/night-owl.nvim",
+
+	lazy = false, -- make sure we load this during startup if it is your main colorscheme
+	priority = 1000, -- make sure to load this before all the other start plugins
+	config = function()
+		-- load the colorscheme here
+		require("night-owl").setup()
+		vim.cmd.colorscheme("night-owl")
+	end,
+}

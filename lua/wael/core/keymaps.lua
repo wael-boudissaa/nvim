@@ -3,14 +3,14 @@ vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true 
 vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
 local harpoon = "harpoon.ui"
-keymap.set("n", "<C-y>", ":lua require('harpoon.ui').toggle_quick_menu() <CR>")
-keymap.set("n", "<C-e>", ":lua require('harpoon.mark').add_file()<CR>")
 
+keymap.set("n", "<leader>y", ":lua require('harpoon.ui').toggle_quick_menu() <CR>")
+keymap.set("n", "<leader>t", ":lua require('harpoon.mark').add_file()<CR>")
 keymap.set("n", "m", ":lua require('harpoon.ui').nav_next()<CR>")
 keymap.set("n", "M", ":lua require('harpoon.ui').nav_prev()<CR>")
-
-keymap.set("n", "<C-p>", "o<ESC>")
-keymap.set("n", "<C-n>", "dd")
+keymap.set("n", "<C-o>", "o<ESC>")
+keymap.set("n", "<C-p>", "<C-o>")
+keymap.set("n", "<C-n>", "ddk")
 
 vim.o.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
@@ -35,6 +35,7 @@ keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 -- Use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
+keymap.set("v", "<CR>", "<ESC>", { desc = "Exit visula mode with Enter" })
 keymap.set("i", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { desc = "window left" })
 keymap.set("i", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "window right" })
 keymap.set("i", "<C-j>", "<cmd> TmuxNavigateDown<CR>", { desc = "window down" })
@@ -94,24 +95,42 @@ keymap.set("n", "<leader>sy", "<C-w>W", { desc = "Cycle through split windows (h
 --
 --
 -- Function to compile and run the current C++ file
-function _CompileAndRunCpp()
-	-- Get the current file name without extension
+function _CompileAndRun()
+	-- Get the current file name without extension and the file type
 	local file = vim.fn.expand("%:t:r")
+	local filetype = vim.bo.filetype
+
+	-- Determine the compile and run commands based on the file type
+	local compile_cmd, run_cmd
+
+	if filetype == "cpp" then
+		compile_cmd = "g++ -o " .. file .. " " .. vim.fn.expand("%")
+		run_cmd = "./" .. file
+	elseif filetype == "go" then
+		compile_cmd = "go run " .. vim.fn.expand("%")
+		run_cmd = "" -- No need to run a separate command for Go since `go run` also executes
+	else
+		print("Unsupported file type: " .. filetype)
+		return
+	end
+
 	-- Compile the file
-	local compile_cmd = "g++ " .. vim.fn.expand("%") .. " -o " .. file .. ".out"
 	local compile_output = vim.fn.system(compile_cmd)
 
-	-- Check if compilation was successful
-	if vim.v.shell_error ~= 0 then
+	-- Check if compilation was successful for C++
+	if filetype == "cpp" and vim.v.shell_error ~= 0 then
 		print("Compilation failed. Check the output for details.")
 		print(compile_output)
 		return
 	end
 
 	-- Run the executable in a split or in the current terminal
-	local run_cmd = "./" .. file .. ".out"
-	vim.cmd("split | term " .. run_cmd)
+	if filetype == "cpp" then
+		vim.cmd("split | term " .. run_cmd)
+	elseif filetype == "go" then
+		vim.cmd("split | term " .. compile_cmd)
+	end
 end
 
--- Map the function to a key (e.g., <leader>ex)
-vim.api.nvim_set_keymap("n", "<leader>eu", ":w<CR> :lua _CompileAndRunCpp()<CR>", { noremap = true, silent = true })
+-- Map the function to a key (e.g., <leader>eu)
+vim.api.nvim_set_keymap("n", "<leader>eu", ":w<CR> :lua _CompileAndRun()<CR>", { noremap = true, silent = true })

@@ -18,6 +18,8 @@ return {
 			-- enable syntax highlighting
 			highlight = {
 				enable = true,
+
+				disable = { "go" }, -- disable highlight for Go
 			},
 			-- enable indentation
 			indent = { enable = true },
@@ -48,6 +50,7 @@ return {
 				"vimdoc",
 				"c",
 				"cpp", -- Add C++ parser
+				"go", -- Add Go parser
 			},
 			incremental_selection = {
 				enable = true,
