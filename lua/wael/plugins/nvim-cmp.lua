@@ -6,9 +6,7 @@ return {
 		"hrsh7th/cmp-path", -- source for file system paths
 		{
 			"L3MON4D3/LuaSnip",
-			-- follow latest release.
 			version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-			-- install jsregexp (optional!).
 			build = "make install_jsregexp",
 		},
 		"saadparwaiz1/cmp_luasnip", -- for autocompletion
@@ -17,19 +15,18 @@ return {
 	},
 	config = function()
 		local cmp = require("cmp")
-
 		local luasnip = require("luasnip")
-
 		local lspkind = require("lspkind")
 
-		-- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
+		-- Load snippets from friendly-snippets
 		require("luasnip.loaders.from_vscode").lazy_load()
 
 		cmp.setup({
 			completion = {
-				completeopt = "menu,menuone,preview,noselect",
+				completeopt = "menu,menuone,noinsert", -- No 'noselect' to allow preselection
 			},
-			snippet = { -- configure how nvim-cmp interacts with snippet engine
+			preselect = cmp.PreselectMode.Item, -- Preselect the first item
+			snippet = {
 				expand = function(args)
 					luasnip.lsp_expand(args.body)
 				end,
@@ -38,28 +35,30 @@ return {
 				["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
 				["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
 				["<C-b>"] = cmp.mapping.scroll_docs(-4),
-				-- ["<C-f>"] = cmp.mapping.scroll_docs(4),
 				["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-				["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
 				["<C-e>"] = cmp.mapping.abort(), -- close completion window
-				["<CR>"] = cmp.mapping.confirm({ select = false }),
+				["<CR>"] = cmp.mapping.confirm({ select = true }), -- Confirm selection, auto-select the first item
 			}),
-			-- sources for autocompletion
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
-
-				{ name = "luasnip" }, -- snippets
-				{ name = "buffer" }, -- text within current buffer
-				{ name = "path" }, -- file system paths
+				{ name = "luasnip" },
+				{ name = "buffer" },
+				{ name = "path" },
 			}),
-
-			-- configure lspkind for vs-code like pictograms in completion menu
 			formatting = {
 				format = lspkind.cmp_format({
 					maxwidth = 50,
 					ellipsis_char = "...",
 				}),
 			},
+			experimental = {
+				ghost_text = true, -- Optional: Shows a virtual text suggestion
+			},
 		})
+
+		-- Optional: Ensure that completion window closes when not visible
+		vim.cmd([[
+			autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+		]])
 	end,
 }

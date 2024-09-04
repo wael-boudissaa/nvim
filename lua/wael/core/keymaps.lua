@@ -3,7 +3,7 @@ vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true 
 vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
 local harpoon = "harpoon.ui"
-
+vim.opt.encoding = "utf-8"
 keymap.set("n", "<leader>y", ":lua require('harpoon.ui').toggle_quick_menu() <CR>")
 keymap.set("n", "<leader>t", ":lua require('harpoon.mark').add_file()<CR>")
 keymap.set("n", "m", ":lua require('harpoon.ui').nav_next()<CR>")

@@ -7,10 +7,19 @@ vim.cmd([[
         autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
     augroup END
 ]])
+
+-- vim.cmd("syntax enable")
+-- vim.cmd("filetype plugin indent on")
+-- vim.cmd([[
+--     augroup CustomHighlights
+--         autocmd!
+--         autocmd ColorScheme * highlight Comment ctermfg=Gray guifg=#6C6C6C
+--         autocmd ColorScheme * highlight String ctermfg=Green guifg=#7CFC00
+--     augroup END
+-- ]])
 -- line numbers
 opt.relativenumber = true -- show relative line numbers
 opt.number = true -- shows absolute line number on cursor line (when relative number is on)
-
 -- tabs & indentation
 opt.tabstop = 4 -- 2 spaces for tabs (prettier default)
 opt.shiftwidth = 4 -- 2 spaces for indent width

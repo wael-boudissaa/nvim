@@ -1,5 +1,5 @@
 require("wael.core")
-require("wael.plugins.colorscheme")
+-- require("wael.plugins.colorscheme")
 require("wael.lazy")
 print([[
 ██╗    ██╗ █████╗ ███████╗██╗         ██████╗██╗  ██╗██╗██╗  ██╗ ██████╗ ██╗   ██╗██████╗ 
@@ -42,10 +42,8 @@ print([[
  ▄███████████████████████████████████████████████████████████████████████▄
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 ]])
-local status_ok, lspconfig = pcall(require, "lspconfig")
-if not status_ok then
-	print("lspconfig is not available")
-	return
-end
 
 -- Similar for other modules...
+--
+--
+--

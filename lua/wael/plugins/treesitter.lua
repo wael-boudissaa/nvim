@@ -1,5 +1,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	"charlespascoe/vim-go-syntax",
 	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
 	dependencies = {
@@ -8,17 +9,29 @@ return {
 		"L3MON4D3/LuaSnip", -- Snippet engine
 		"saadparwaiz1/cmp_luasnip", -- Snippet source for nvim-cmp
 		"rafamadriz/friendly-snippets", -- Snippet collection
+		-- Prisma syntax highlighting
+		{
+			"prisma/vim-prisma",
+			ft = "prisma", -- Load only for Prisma files
+		},
 	},
 	config = function()
 		-- import nvim-treesitter plugin
 		local treesitter = require("nvim-treesitter.configs")
+		local golang = require("vim-go.syntax.go")
+
+		golang.setup({
+			go_highlight_function_calls = "Type",
+			go_highlight_fields = 1,
+			go_highlight_braces = 1,
+			go_highlight_brackets = 1,
+		})
 
 		-- configure treesitter
 		treesitter.setup({
 			-- enable syntax highlighting
 			highlight = {
 				enable = true,
-
 				disable = { "go" }, -- disable highlight for Go
 			},
 			-- enable indentation
@@ -36,7 +49,7 @@ return {
 				"yaml",
 				"html",
 				"css",
-				"prisma",
+				"prisma", -- Add Prisma parser (if supported by Treesitter)
 				"markdown",
 				"markdown_inline",
 				"svelte",

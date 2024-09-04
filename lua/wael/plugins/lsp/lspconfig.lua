@@ -46,16 +46,26 @@ return {
 
 		-- Ensure the golangci_lint_ls server is configured
 		local configs = require("lspconfig.configs")
-		-- if not configs.golangci_lint_ls then
-		-- 	configs.golangci_lint_ls = {
-		-- 		default_config = {
-		-- 			cmd = { "/home/wael-boudissa/go/bin/golangci-lint-langserver" },
-		-- 			filetypes = { "go" },
-		-- 			root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
-		-- 			settings = {},
-		-- 		},
-		-- 	}
-		-- end
+		if not configs.golangcilsp then
+			configs.golangcilsp = {
+				default_config = {
+					cmd = { "golangci-lint-langserver" },
+					root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
+					init_options = {
+						command = {
+							"golangci-lint",
+							"run",
+							"--enable-all",
+							"--disable",
+							"lll",
+							"--out-format",
+							"json",
+							"--issues-exit-code=1",
+						},
+					},
+				},
+			}
+		end
 
 		-- Setup the golangci_lint_ls server
 		lspconfig.golangci_lint_ls.setup({

@@ -8,7 +8,7 @@
 -- 		vim.g.gruvbox_material_enable_italic = true
 -- 		vim.cmd.colorscheme("gruvbox-material")
 -- 	end,
--- }
+-- -- }
 -- return {
 -- 	{
 -- 		"rose-pine/neovim",
@@ -111,10 +111,10 @@
 -- 		end
 --
 -- 		-- create a user command for switching themes
--- 		vim.api.nvim_create_user_command("switchvscodetheme", switch_vscode_theme, {})
+-- 		vim.api.nvim_create_user_command("Switchvscodetheme", switch_vscode_theme, {})
 --
 -- 		-- optionally set a keybinding for switching themes
--- 		vim.api.nvim_set_keymap("n", "<leader>kt", ":switchvscodetheme<cr>", { noremap = true, silent = true })
+-- 		vim.api.nvim_set_keymap("n", "<leader>kt", ":Switchvscodetheme<cr>", { noremap = true, silent = true })
 --
 -- 		-- load the initial theme
 -- 		vim.o.background = "dark"
@@ -183,7 +183,7 @@
 -- 		-- })
 -- 	end,
 -- }
---
+-- --
 -- return {
 --
 -- 	"olivercederborg/poimandres.nvim",
@@ -203,55 +203,107 @@
 -- 	end,
 -- }
 --
+--
+return {
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+		config = function()
+			vim.cmd([[
+colorscheme tokyonight-night
+]])
+		end,
+	},
+}
+-- return {
+-- 	--
+-- 	"oxfist/night-owl.nvim",
+--
+-- 	lazy = false, -- make sure we load this during startup if it is your main colorscheme
+-- 	priority = 1000, -- make sure to load this before all the other start plugins
+-- 	config = function()
+-- 		-- load the colorscheme here
+-- 		require("night-owl").setup()
+-- 		vim.cmd.colorscheme("night-owl")
+-- 	end,
+-- }
+-- function ColorMyPencils(color)
+-- 	color = color or "rose-pine-moon"
+-- 	vim.cmd.colorscheme(color)
+--
+-- 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+-- 	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+-- end
+--
 -- return {
 -- 	{
--- 		"folke/tokyonight.nvim",
--- 		priority = 1000, -- make sure to load this before all the other start plugins
+-- 		"erikbackman/brightburn.vim",
+-- 	},
 --
+-- 	{
+-- 		"ellisonleao/gruvbox.nvim",
+-- 		name = "gruvbox",
 -- 		config = function()
--- 			local bg = "#282a36" -- A dark, muted purple-blue background
--- 			local bg_dark = "#1c1e26" -- A deeper almost black shade for darker areas
--- 			local bg_highlight = "#44475a" -- A soft grayish-blue for highlights
--- 			local bg_search = "#ff79c6" -- A vibrant pink for search highlights
--- 			local bg_visual = "#bd93f9" -- A lavender shade for visual mode
--- 			local fg = "#f8f8f2" -- A near-white color for foreground text
--- 			local fg_dark = "#e0e0e0" -- A light gray for secondary text
--- 			local fg_gutter = "#6272a4" -- A cool blue-gray for the gutter
--- 			local border = "#50fa7b" -- A bright, fresh green for the border
--- 			require("tokyonight").setup({
--- 				style = "night",
--- 				on_colors = function(colors)
--- 					colors.bg = bg
--- 					colors.bg_dark = bg_dark
--- 					colors.bg_float = bg_dark
--- 					colors.bg_highlight = bg_highlight
--- 					colors.bg_popup = bg_dark
--- 					colors.bg_search = bg_search
--- 					colors.bg_sidebar = bg_dark
--- 					colors.bg_statusline = bg_dark
--- 					colors.bg_visual = bg_visual
--- 					colors.border = border
--- 					colors.fg = fg
--- 					colors.fg_dark = fg_dark
--- 					colors.fg_float = fg
--- 					colors.fg_gutter = fg_gutter
--- 					colors.fg_sidebar = fg_dark
--- 				end,
+-- 			require("gruvbox").setup({
+-- 				terminal_colors = true, -- add neovim terminal colors
+-- 				undercurl = true,
+-- 				underline = false,
+-- 				bold = true,
+-- 				italic = {
+-- 					strings = false,
+-- 					emphasis = false,
+-- 					comments = false,
+-- 					operators = false,
+-- 					folds = false,
+-- 				},
+-- 				strikethrough = true,
+-- 				invert_selection = false,
+-- 				invert_signs = false,
+-- 				invert_tabline = false,
+-- 				invert_intend_guides = false,
+-- 				inverse = true, -- invert background for search, diffs, statuslines and errors
+-- 				contrast = "", -- can be "hard", "soft" or empty string
+-- 				palette_overrides = {},
+-- 				overrides = {},
+-- 				dim_inactive = false,
+-- 				transparent_mode = false,
 -- 			})
--- 			-- load the colorscheme here
--- 			vim.cmd([[colorscheme tokyonight]])
+-- 		end,
+-- 	},
+--
+-- 	{
+-- 		"folke/tokyonight.nvim",
+-- 		lazy = false,
+-- 		config = function()
+-- 			require("tokyonight").setup({
+-- 				style = "storm", -- the theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+-- 				transparent = true, -- enable this to disable setting the background color
+-- 				terminal_colors = true, -- configure the colors used when opening a `:terminal` in neovim
+-- 				styles = {
+-- 					comments = { italic = false },
+-- 					keywords = { italic = false },
+-- 					sidebars = "dark",
+-- 					floats = "dark",
+-- 				},
+-- 			})
+-- 			-- colormypencils("tokyonight-storm") -- set the color scheme after setup
+-- 		end,
+-- 	},
+--
+-- 	{
+-- 		"rose-pine/neovim",
+-- 		name = "rose-pine",
+-- 		config = function()
+-- 			require("rose-pine").setup({
+-- 				disable_background = true,
+-- 				styles = {
+-- 					italic = false,
+-- 				},
+-- 			})
+-- 			-- Uncomment this line if you want to set rose-pine as the color scheme
+-- 			ColorMyPencils("rose-pine-moon")
 -- 		end,
 -- 	},
 -- }
-return {
-	--
-	"oxfist/night-owl.nvim",
-
-	lazy = false, -- make sure we load this during startup if it is your main colorscheme
-	priority = 1000, -- make sure to load this before all the other start plugins
-	config = function()
-		-- load the colorscheme here
-		require("night-owl").setup()
-		vim.cmd.colorscheme("night-owl")
-	end,
-}

@@ -20,8 +20,8 @@ return {
 				liquid = { "prettier" },
 				lua = { "stylua" },
 				python = { "isort", "black" },
-				cpp = { "clang-format" }, -- Add clang-format for C++
-				go = { "gofmt" }, -- Add gofmt for Go
+				cpp = { "clang-format" },
+				go = { "gofmt" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
