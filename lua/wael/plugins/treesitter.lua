@@ -4,6 +4,7 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
 	dependencies = {
+		-- Existing dependencies
 		"windwp/nvim-ts-autotag",
 		"hrsh7th/nvim-cmp", -- Autocompletion plugin
 		"L3MON4D3/LuaSnip", -- Snippet engine
@@ -13,6 +14,30 @@ return {
 		{
 			"prisma/vim-prisma",
 			ft = "prisma", -- Load only for Prisma files
+		},
+		-- Add Flutter and Dart support
+		{
+			"dart-lang/dart-vim-plugin", -- Basic Dart syntax highlighting
+			ft = { "dart" }, -- Load only for Dart files
+		},
+		{
+			"akinsho/flutter-tools.nvim",
+			dependencies = "nvim-lua/plenary.nvim",
+			config = function()
+				require("flutter-tools").setup({
+					lsp = {
+						-- Customize LSP settings for Dart/Flutter
+						settings = {
+							showTodos = true,
+							completeFunctionCalls = true,
+						},
+					},
+				})
+			end,
+		},
+		{
+			"natebosch/vim-lsc", -- Language Server Client (alternative to nvim-lspconfig)
+			ft = { "dart" }, -- Load only for Dart files
 		},
 	},
 	config = function()
@@ -64,6 +89,7 @@ return {
 				"c",
 				"cpp", -- Add C++ parser
 				"go", -- Add Go parser
+				"dart", -- Add Dart parser
 			},
 			incremental_selection = {
 				enable = true,

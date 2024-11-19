@@ -1,5 +1,7 @@
 return {
 	"stevearc/conform.nvim",
+	"dart-lang/dart-vim-plugin", -- Dart syntax highlighting
+	ft = { "dart" },
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local conform = require("conform")

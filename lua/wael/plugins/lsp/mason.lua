@@ -30,6 +30,7 @@ return {
 				"html",
 				"cssls",
 				"tailwindcss",
+				"dartls",
 				"svelte",
 				"lua_ls",
 				"graphql",
