@@ -20,12 +20,12 @@ return {
 			local buf_set_option = vim.api.nvim_buf_set_option
 			buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-			-- Define your key mappings here...
+			-- Define key mappings
 			buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
-			-- More keybindings as needed...
+			-- Add more keybindings as needed
 		end
 
-		-- Existing Go configuration...
+		-- Existing Go configuration
 		lspconfig.gopls.setup({
 			on_attach = on_attach,
 			capabilities = capabilities,
@@ -45,7 +45,7 @@ return {
 		lspconfig.dartls.setup({
 			on_attach = on_attach,
 			capabilities = capabilities,
-			cmd = { "dart", "language-server", "--protocol=lsp" }, -- Adjust if necessary
+			cmd = { "dart", "language-server", "--protocol=lsp" },
 			root_dir = lspconfig.util.root_pattern("pubspec.yaml", ".git"),
 			settings = {
 				dart = {
@@ -58,7 +58,7 @@ return {
 			},
 		})
 
-		-- Golangci-lint setup...
+		-- Golangci-lint setup
 		local configs = require("lspconfig.configs")
 		if not configs.golangcilsp then
 			configs.golangcilsp = {
@@ -81,21 +81,20 @@ return {
 			}
 		end
 
-		-- Setup for golangci-lint...
 		lspconfig.golangci_lint_ls.setup({
 			capabilities = capabilities,
 			filetypes = { "go" },
 			root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
 		})
 
-		-- Diagnostics signs setup...
+		-- Diagnostics signs
 		local signs = { Error = "", Warn = "", Hint = "󰌶", Info = "" }
 		for type, icon in pairs(signs) do
 			local hl = "DiagnosticSign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
-		-- Mason LSP handlers...
+		-- Mason LSP handlers
 		mason_lspconfig.setup_handlers({
 			function(server_name)
 				lspconfig[server_name].setup({
@@ -105,7 +104,7 @@ return {
 			end,
 		})
 
-		-- Additional LSP keybindings...
+		-- Additional LSP keybindings
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)

@@ -26,11 +26,10 @@ return {
 		mason_lspconfig.setup({
 			ensure_installed = {
 				"gopls",
-				"tsserver",
+				-- "tsserver",
 				"html",
 				"cssls",
 				"tailwindcss",
-				"dartls",
 				"svelte",
 				"lua_ls",
 				"graphql",
