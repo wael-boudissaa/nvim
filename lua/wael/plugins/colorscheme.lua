@@ -204,31 +204,31 @@
 -- }
 --
 --
-return {
-	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {},
-		config = function()
-			vim.cmd([[
-colorscheme tokyonight-night
-]])
-		end,
-	},
-}
 -- return {
--- 	--
--- 	"oxfist/night-owl.nvim",
---
--- 	lazy = false, -- make sure we load this during startup if it is your main colorscheme
--- 	priority = 1000, -- make sure to load this before all the other start plugins
--- 	config = function()
--- 		-- load the colorscheme here
--- 		require("night-owl").setup()
--- 		vim.cmd.colorscheme("night-owl")
--- 	end,
+-- 	{
+-- 		"folke/tokyonight.nvim",
+-- 		lazy = false,
+-- 		priority = 1000,
+-- 		opts = {},
+-- 		config = function()
+-- 			vim.cmd([[
+-- colorscheme tokyonight-night
+-- ]])
+-- 		end,
+-- 	},
 -- }
+return {
+	--
+	"oxfist/night-owl.nvim",
+
+	lazy = false, -- make sure we load this during startup if it is your main colorscheme
+	priority = 1000, -- make sure to load this before all the other start plugins
+	config = function()
+		-- load the colorscheme here
+		require("night-owl").setup()
+		vim.cmd.colorscheme("night-owl")
+	end,
+}
 -- function ColorMyPencils(color)
 -- 	color = color or "rose-pine-moon"
 -- 	vim.cmd.colorscheme(color)
@@ -273,24 +273,7 @@ colorscheme tokyonight-night
 -- 		end,
 -- 	},
 --
--- 	{
--- 		"folke/tokyonight.nvim",
--- 		lazy = false,
--- 		config = function()
--- 			require("tokyonight").setup({
--- 				style = "storm", -- the theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
--- 				transparent = true, -- enable this to disable setting the background color
--- 				terminal_colors = true, -- configure the colors used when opening a `:terminal` in neovim
--- 				styles = {
--- 					comments = { italic = false },
--- 					keywords = { italic = false },
--- 					sidebars = "dark",
--- 					floats = "dark",
--- 				},
--- 			})
--- 			-- colormypencils("tokyonight-storm") -- set the color scheme after setup
--- 		end,
--- 	},
+
 --
 -- 	{
 -- 		"rose-pine/neovim",

@@ -23,16 +23,12 @@ return {
 				lua = { "stylua" },
 				python = { "isort", "black" },
 				cpp = { "clang-format" },
-				go = { "gofmt" },
-			},
-			format_on_save = {
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
-			},
-		})
+				go = { "gofmt", "goimports" }, -- Add `goimports` for more robust formatting
+				mysql = { "sql-formatter" },  -- Add support for MySQL/SQL formatting
+			}}
+		)
 
-		vim.keymap.set({ "n", "v" }, "<leader>//", function()
+		vim.keymap.set({ "n", "v" }, "<leader>fm", function()
 			conform.format({
 				lsp_fallback = true,
 				async = false,

@@ -10,7 +10,7 @@ return {
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 }
 
-
+--
 -- return {
 -- 	"nvim-tree/nvim-tree.lua",
 -- 	dependencies = "nvim-tree/nvim-web-devicons",

@@ -1,4 +1,5 @@
 -- Set leader key to space
+vim.env.PATH = vim.env.PATH .. ':/home/wael-boudissa/.npm-global/bin'
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
