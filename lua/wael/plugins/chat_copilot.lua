@@ -1,7 +1,7 @@
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "main",
+    branch = "main", -- Use main branch as recommended
     cmd = {
       "CopilotChat",
       "CopilotChatToggle",
@@ -13,16 +13,19 @@ return {
       { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim" },
     },
-    build = "make tiktoken", -- Required for token handling on Unix
+    build = "make tiktoken", -- Only needed on Mac/Linux
     opts = {
-      debug = false, -- Set true for verbose logs
+      debug = false,
       window = {
-        layout = "float", -- 'vertical', 'horizontal', or 'float'
+        layout = "float",
         width = 0.6,
         height = 0.7,
       },
       mappings = {
-        submit_prompt = "<CR>",
+        submit_prompt = {
+          normal = "<CR>",  -- Enter in normal mode
+          insert = "<CR>",  -- Enter in insert mode
+        },
       },
     },
     keys = {
