@@ -24,6 +24,7 @@ return {
 				--ISSUE: issuer
 				--BUG: bug
 				--FIXME:
+                --XXX
 				--TODO: comments
 				--WARNING:
 				--HACK:
