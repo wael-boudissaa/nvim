@@ -36,9 +36,8 @@ return {
 				["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
 				["<C-b>"] = cmp.mapping.scroll_docs(-4),
 				["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-				-- ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
 				["<C-e>"] = cmp.mapping.abort(), -- close completion window
-				["<CR>"] = cmp.mapping.confirm({ select = false }),
+				["<CR>"] = cmp.mapping.confirm({ select = true }), -- Confirm selection, auto-select the first item
 			}),
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
@@ -57,7 +56,7 @@ return {
 			},
 		})
 
-		-- If the above doesn't work, try forcing the behavior with an event
+		-- Optional: Ensure that completion window closes when not visible
 		vim.cmd([[
 			autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 		]])

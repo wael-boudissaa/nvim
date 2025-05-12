@@ -1,143 +1,272 @@
 return {
-	"neovim/nvim-lspconfig",
-	cmd = { "LspInfo", "LspInstall", "LspStart" },
-	event = { "BufReadPre", "BufNewFile" },
-	dependencies = {
-		{ "hrsh7th/cmp-nvim-lsp" },
-		{ "williamboman/mason-lspconfig.nvim" },
-		{ "antosha417/nvim-lsp-file-operations", config = true },
-		{ "folke/neodev.nvim", opts = {} },
-	},
-	config = function()
-		local lspconfig = require("lspconfig")
-		local mason_lspconfig = require("mason-lspconfig")
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+  'VonHeikemen/lsp-zero.nvim',
+  branch = 'v3.x',
+  lazy = false,
+  priority = 100, -- make sure this loads early
+  dependencies = {
+    -- LSP Support
+    'neovim/nvim-lspconfig',
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-nvim-lua',
+    'saadparwaiz1/cmp_luasnip',
+    'L3MON4D3/LuaSnip',
+    'rafamadriz/friendly-snippets',
+    -- Dart/Flutter tools
+    'akinsho/flutter-tools.nvim',
+  },
+  config = function()
+    -- Set up diagnostic signs
+    local signs = { Error = " ", Warn = " ", Hint = "󰌵 ", Info = " " }
+    for type, icon in pairs(signs) do
+      local hl = "DiagnosticSign" .. type
+      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+    end
 
-		-- Local on_attach function
-		local on_attach = function(client, bufnr)
-			local buf_set_keymap = vim.api.nvim_buf_set_keymap
-			local buf_set_option = vim.api.nvim_buf_set_option
-			buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+    -- Set up Mason first
+    require('mason').setup({
+      ui = {
+        icons = {
+          package_installed = "✓",
+          package_pending = "➜",
+          package_uninstalled = "✗",
+        },
+      },
+    })
 
-			-- Define key mappings
-			buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
-			-- Add more keybindings as needed
-		end
+    -- Configure language servers to install
+    local servers = {
+      -- Go
+      'gopls',
+      'golangci_lint_ls',
+      -- Web development
+      'html',
+      'cssls',
+      'tailwindcss',
+      'svelte',
+      'graphql',
+      'emmet_ls',
+      'prismals',
+      -- Other languages
+      'lua_ls',
+      'pyright',
+      'clangd',
+      -- Dart is handled by flutter-tools
+    }
 
-		-- Existing Go configuration
-		lspconfig.gopls.setup({
-			on_attach = on_attach,
-			capabilities = capabilities,
-			cmd = { "gopls" },
-			filetypes = { "go", "gomod", "gowork", "gotmpl" },
-			root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
-			settings = {
-				gopls = {
-					completeUnimported = true,
-					usePlaceholders = true,
-					analyses = { unusedparams = true },
-				},
-			},
-		})
+    -- Configure tools to install
+    local tools = {
+      -- Go tools
+      'golangci-lint',
+      'gopls',
+      -- Formatters
+      'prettier',
+      'stylua',
+      -- 'isort',
+      -- 'black',
+      -- Linters
+      -- 'pylint',
+      'eslint_d',
+    }
 
-		-- Dart/Flutter configuration
-		lspconfig.dartls.setup({
-			on_attach = on_attach,
-			capabilities = capabilities,
-			cmd = { "dart", "language-server", "--protocol=lsp" },
-			root_dir = lspconfig.util.root_pattern("pubspec.yaml", ".git"),
-			settings = {
-				dart = {
-					completeFunctionCalls = true,
-					analysisExcludedFolders = {
-						vim.fn.expand("$HOME/.pub-cache"),
-						vim.fn.expand("/opt/flutter/packages"),
-					},
-				},
-			},
-		})
+    -- Set up mason-lspconfig
+    require('mason-lspconfig').setup({
+      ensure_installed = servers,
+      automatic_installation = true,
+    })
 
-		-- Golangci-lint setup
-		local configs = require("lspconfig.configs")
-		if not configs.golangcilsp then
-			configs.golangcilsp = {
-				default_config = {
-					cmd = { "golangci-lint-langserver" },
-					root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
-					init_options = {
-						command = {
-							"golangci-lint",
-							"run",
-							"--enable-all",
-							"--disable",
-							"lll",
-							"--out-format",
-							"json",
-							"--issues-exit-code=1",
-						},
-					},
-				},
-			}
-		end
+    -- Set up mason-tool-installer
+    require('mason-tool-installer').setup({
+      ensure_installed = tools,
+      auto_update = false,
+      run_on_start = true,
+    })
 
-		lspconfig.golangci_lint_ls.setup({
-			capabilities = capabilities,
-			filetypes = { "go" },
-			root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
-		})
+    -- Initialize lsp-zero
+    local lsp = require('lsp-zero').preset({
+      name = 'minimal',
+      set_lsp_keymaps = true,
+      manage_nvim_cmp = true,
+      suggest_lsp_servers = false,
+    })
 
-		-- Diagnostics signs
-		local signs = { Error = "", Warn = "", Hint = "󰌶", Info = "" }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
+    -- Add custom keymaps for LSP
+    lsp.on_attach(function(client, bufnr)
+      local opts = { buffer = bufnr, silent = true, noremap = true }
+      
+      -- Navigation
+      vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+      vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
+      vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)
+      vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
+      vim.keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end, opts)
+      vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+      
+      -- Code actions
+      vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
+      vim.keymap.set({"n", "v"}, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
+      
+      -- Diagnostics
+      vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
+      vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
+      vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+      vim.keymap.set("n", "<leader>q", function() vim.diagnostic.setloclist() end, opts)
+      
+      -- Format
+      vim.keymap.set("n", "<leader>fm", function() vim.lsp.buf.format({ async = true }) end, opts)
+      
+      -- If telescope is available, set up telescope-based keymaps
+      local has_telescope, telescope = pcall(require, "telescope.builtin")
+      if has_telescope then
+        vim.keymap.set("n", "gR", function() telescope.lsp_references() end, opts)
+        vim.keymap.set("n", "<leader>D", function() telescope.diagnostics({ bufnr = 0 }) end, opts)
+      end
+    end)
 
-		-- Mason LSP handlers
-		mason_lspconfig.setup_handlers({
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-				})
-			end,
-		})
+    -- Configure specific language servers
+    
+    -- gopls (Go)
+    lsp.configure('gopls', {
+      cmd = { "gopls" },
+      filetypes = { "go", "gomod", "gowork", "gotmpl" },
+      root_dir = require('lspconfig').util.root_pattern("go.work", "go.mod", ".git"),
+      settings = {
+        gopls = {
+          completeUnimported = true,
+          usePlaceholders = true,
+          analyses = {
+            unusedparams = true,
+            shadow = true,
+          },
+          staticcheck = true,
+          gofumpt = true,
+        },
+      },
+    })
+    
+    -- golangci-lint
+    lsp.configure('golangci_lint_ls', {
+      filetypes = { "go", "gomod" },
+      root_dir = require('lspconfig').util.root_pattern(".git", "go.mod"),
+      init_options = {
+        command = { 
+          "golangci-lint", 
+          "run", 
+          "--output-format", 
+          "json" 
+        },
+      },
+    })
+    
+    -- lua_ls (Lua)
+    lsp.configure('lua_ls', {
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { 'vim' },
+          },
+          workspace = {
+            library = vim.api.nvim_get_runtime_file("", true),
+            checkThirdParty = false,
+          },
+          telemetry = {
+            enable = false,
+          },
+        },
+      },
+    })
 
-		-- Additional LSP keybindings
-		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-			callback = function(ev)
-				local opts = { buffer = ev.buf, silent = true }
-				local keymap = vim.keymap
+    -- Set up nvim-cmp
+    local cmp = require('cmp')
+    local luasnip = require('luasnip')
+    
+    -- Load snippets
+    require('luasnip.loaders.from_vscode').lazy_load()
+    
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end,
+      },
+      mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<CR>'] = cmp.mapping.confirm({ select = false }),
+        ['<Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+      }),
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+        { name = 'buffer' },
+        { name = 'path' },
+      }),
+    })
 
-				opts.desc = "Show LSP references"
-				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
-				opts.desc = "Go to declaration"
-				keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-				opts.desc = "Go to definition"
-				keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-				opts.desc = "Show LSP implementations"
-				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
-				opts.desc = "Show LSP type definitions"
-				keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
-				opts.desc = "See available code actions"
-				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-				opts.desc = "Smart rename"
-				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-				opts.desc = "Show buffer diagnostics"
-				keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
-				opts.desc = "Show line diagnostics"
-				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-				opts.desc = "Go to previous diagnostic"
-				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-				opts.desc = "Go to next diagnostic"
-				keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-				opts.desc = "Show documentation for what is under cursor"
-				keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				opts.desc = "Restart LSP"
-				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
-			end,
-		})
-	end,
+    -- Set up Dart/Flutter support via flutter-tools
+    require('flutter-tools').setup({
+      lsp = {
+        on_attach = function(client, bufnr)
+          -- Call lsp-zero's default on_attach function
+          lsp.on_attach(client, bufnr)
+          
+          -- Flutter-specific keymaps
+          local opts = { buffer = bufnr, silent = true, noremap = true }
+          vim.keymap.set("n", "<leader>fr", ":FlutterRun<CR>", opts)
+          vim.keymap.set("n", "<leader>fd", ":FlutterDevices<CR>", opts)
+          vim.keymap.set("n", "<leader>fe", ":FlutterEmulators<CR>", opts)
+          vim.keymap.set("n", "<leader>fq", ":FlutterQuit<CR>", opts)
+        end,
+        capabilities = lsp.get_capabilities(),
+      },
+      debugger = {
+        enabled = true,
+        run_via_dap = true,
+      },
+      flutter_path = os.getenv("FLUTTER_HOME") or nil,
+      widget_guides = {
+        enabled = true,
+      },
+    })
+
+    -- Set up LSP
+    lsp.setup()
+    
+    -- Configure diagnostics appearance (after lsp.setup())
+    vim.diagnostic.config({
+      virtual_text = false,
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+      severity_sort = true,
+      float = {
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+      },
+    })
+  end,
 }
