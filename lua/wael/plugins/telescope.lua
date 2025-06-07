@@ -58,5 +58,7 @@ return {
     keymap("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Search string in project" })
     keymap("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Search word under cursor" })
     keymap("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Search TODO comments" })
+keymap("n", "<leader>fa", "<cmd>Telescope lsp_code_actions<cr>", { desc = "LSP code actions at cursor" })
+keymap("v", "<leader>fA", "<cmd>Telescope lsp_range_code_actions<cr>", { desc = "LSP code actions for selection" })
   end,
 }

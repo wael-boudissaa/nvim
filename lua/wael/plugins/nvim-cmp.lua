@@ -50,6 +50,8 @@ return {
 					maxwidth = 50,
 					ellipsis_char = "...",
 				}),
+
+
 			},
 			experimental = {
 				ghost_text = true, -- Optional: Shows a virtual text suggestion

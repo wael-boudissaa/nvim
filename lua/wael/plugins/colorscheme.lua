@@ -9,86 +9,86 @@
 -- 		vim.cmd.colorscheme("gruvbox-material")
 -- 	end,
 -- -- }
-return {
-	{
-		"rose-pine/neovim",
-		name = "rose-pine",
-		config = function()
-			require("rose-pine").setup({
-				variant = "auto", -- auto, main, moon, or dawn
-				dark_variant = "main", -- main, moon, or dawn
-				dim_inactive_windows = false,
-				extend_background_behind_borders = true,
-
-				enable = {
-					terminal = true,
-					legacy_highlights = true, -- improve compatibility for previous versions of neovim
-					migrations = true, -- handle deprecated options automatically
-				},
-
-				styles = {
-					bold = true,
-					italic = true,
-					transparency = false,
-				},
-
-				groups = {
-					border = "muted",
-					link = "iris",
-					panel = "surface",
-
-					error = "love",
-					hint = "iris",
-					info = "foam",
-					note = "pine",
-					todo = "rose",
-					warn = "gold",
-
-					git_add = "foam",
-					git_change = "rose",
-					git_delete = "love",
-					git_dirty = "rose",
-					git_ignore = "muted",
-					git_merge = "iris",
-					git_rename = "pine",
-					git_stage = "iris",
-					git_text = "rose",
-					git_untracked = "subtle",
-
-					h1 = "iris",
-					h2 = "foam",
-					h3 = "rose",
-					h4 = "gold",
-					h5 = "pine",
-					h6 = "foam",
-				},
-
-				highlight_groups = {
-					-- comment = { fg = "foam" },
-					-- vertsplit = { fg = "muted", bg = "muted" },
-				},
-
-				before_highlight = function(group, highlight, palette)
-					-- disable all undercurls
-					-- if highlight.undercurl then
-					--     highlight.undercurl = false
-					-- end
-					--
-					-- change palette colour
-					-- if highlight.fg == palette.pine then
-					--     highlight.fg = palette.foam
-					-- end
-				end,
-			})
-
-			-- vim.cmd("colorscheme rose-pine")
-			-- uncomment one of the following to use a specific variant
-			vim.cmd("colorscheme rose-pine-main")
-			-- vim.cmd("colorscheme rose-pine-moon")
-			-- vim.cmd("colorscheme rose-pine-dawn")
-		end,
-	},
-}
+-- return {
+-- 	{
+-- 		"rose-pine/neovim",
+-- 		name = "rose-pine",
+-- 		config = function()
+-- 			require("rose-pine").setup({
+-- 				variant = "auto", -- auto, main, moon, or dawn
+-- 				dark_variant = "main", -- main, moon, or dawn
+-- 				dim_inactive_windows = false,
+-- 				extend_background_behind_borders = true,
+--
+-- 				enable = {
+-- 					terminal = true,
+-- 					legacy_highlights = true, -- improve compatibility for previous versions of neovim
+-- 					migrations = true, -- handle deprecated options automatically
+-- 				},
+--
+-- 				styles = {
+-- 					bold = true,
+-- 					italic = true,
+-- 					transparency = false,
+-- 				},
+--
+-- 				groups = {
+-- 					border = "muted",
+-- 					link = "iris",
+-- 					panel = "surface",
+--
+-- 					error = "love",
+-- 					hint = "iris",
+-- 					info = "foam",
+-- 					note = "pine",
+-- 					todo = "rose",
+-- 					warn = "gold",
+--
+-- 					git_add = "foam",
+-- 					git_change = "rose",
+-- 					git_delete = "love",
+-- 					git_dirty = "rose",
+-- 					git_ignore = "muted",
+-- 					git_merge = "iris",
+-- 					git_rename = "pine",
+-- 					git_stage = "iris",
+-- 					git_text = "rose",
+-- 					git_untracked = "subtle",
+--
+-- 					h1 = "iris",
+-- 					h2 = "foam",
+-- 					h3 = "rose",
+-- 					h4 = "gold",
+-- 					h5 = "pine",
+-- 					h6 = "foam",
+-- 				},
+--
+-- 				highlight_groups = {
+-- 					-- comment = { fg = "foam" },
+-- 					-- vertsplit = { fg = "muted", bg = "muted" },
+-- 				},
+--
+-- 				before_highlight = function(group, highlight, palette)
+-- 					-- disable all undercurls
+-- 					-- if highlight.undercurl then
+-- 					--     highlight.undercurl = false
+-- 					-- end
+-- 					--
+-- 					-- change palette colour
+-- 					-- if highlight.fg == palette.pine then
+-- 					--     highlight.fg = palette.foam
+-- 					-- end
+-- 				end,
+-- 			})
+--
+-- 			-- vim.cmd("colorscheme rose-pine")
+-- 			-- uncomment one of the following to use a specific variant
+-- 			vim.cmd("colorscheme rose-pine-main")
+-- 			-- vim.cmd("colorscheme rose-pine-moon")
+-- 			-- vim.cmd("colorscheme rose-pine-dawn")
+-- 		end,
+-- 	},
+-- }
 --
 -- -- default options:
 -- setup must be called before loadingr
@@ -120,72 +120,70 @@ return {
 -- 		vim.o.background = "dark"
 -- 		require("vscode").load("dark")
 --
--- 		-- configure bufferline
--- 		-- require("bufferline").setup({
--- 		-- 	options = {
--- 		-- 		buffer_close_icon = "",
--- 		-- 		close_command = "bdelete %d",
--- 		-- 		close_icon = "",
--- 		-- 		indicator = {
--- 		-- 			style = "icon",
--- 		-- 			icon = " ",
--- 		-- 		},
--- 		-- 		left_trunc_marker = "",
--- 		-- 		modified_icon = "●",
--- 		-- 		offsets = { { filetype = "nvimtree", text = "explorer", text_align = "center" } },
--- 		-- 		right_mouse_command = "bdelete! %d",
--- 		-- 		right_trunc_marker = "",
--- 		-- 		show_close_icon = false,
--- 		-- 		show_tab_indicators = true,
--- 		-- 	},
--- 		-- 	highlights = {
--- 		-- 		fill = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "statuslinenc" },
--- 		-- 		},
--- 		-- 		background = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "statusline" },
--- 		-- 		},
--- 		-- 		buffer_visible = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "normal" },
--- 		-- 		},
--- 		-- 		buffer_selected = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "normal" },
--- 		-- 		},
--- 		-- 		separator = {
--- 		-- 			fg = { attribute = "bg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "statusline" },
--- 		-- 		},
--- 		-- 		separator_selected = {
--- 		-- 			fg = { attribute = "fg", highlight = "special" },
--- 		-- 			bg = { attribute = "bg", highlight = "normal" },
--- 		-- 		},
--- 		-- 		separator_visible = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "statuslinenc" },
--- 		-- 		},
--- 		-- 		close_button = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "statusline" },
--- 		-- 		},
--- 		-- 		close_button_selected = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "normal" },
--- 		-- 		},
--- 		-- 		close_button_visible = {
--- 		-- 			fg = { attribute = "fg", highlight = "normal" },
--- 		-- 			bg = { attribute = "bg", highlight = "normal" },
--- 		-- 		},
--- 		-- 	},
--- 		-- })
+-- 		require("bufferline").setup({
+-- 			options = {
+-- 				buffer_close_icon = "",
+-- 				close_command = "bdelete %d",
+-- 				close_icon = "",
+-- 				indicator = {
+-- 					style = "icon",
+-- 					icon = " ",
+-- 				},
+-- 				left_trunc_marker = "",
+-- 				modified_icon = "●",
+-- 				offsets = { { filetype = "nvimtree", text = "explorer", text_align = "center" } },
+-- 				right_mouse_command = "bdelete! %d",
+-- 				right_trunc_marker = "",
+-- 				show_close_icon = false,
+-- 				show_tab_indicators = true,
+-- 			},
+-- 			highlights = {
+-- 				fill = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "statuslinenc" },
+-- 				},
+-- 				background = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "statusline" },
+-- 				},
+-- 				buffer_visible = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "normal" },
+-- 				},
+-- 				buffer_selected = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "normal" },
+-- 				},
+-- 				separator = {
+-- 					fg = { attribute = "bg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "statusline" },
+-- 				},
+-- 				separator_selected = {
+-- 					fg = { attribute = "fg", highlight = "special" },
+-- 					bg = { attribute = "bg", highlight = "normal" },
+-- 				},
+-- 				separator_visible = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "statuslinenc" },
+-- 				},
+-- 				close_button = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "statusline" },
+-- 				},
+-- 				close_button_selected = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "normal" },
+-- 				},
+-- 				close_button_visible = {
+-- 					fg = { attribute = "fg", highlight = "normal" },
+-- 					bg = { attribute = "bg", highlight = "normal" },
+-- 				},
+-- 			},
+-- 		})
 -- 	end,
 -- }
 -- --
 -- return {
---
 -- 	"olivercederborg/poimandres.nvim",
 -- 	lazy = false,
 -- 	priority = 1000,
@@ -202,21 +200,21 @@ return {
 -- 		vim.cmd("colorscheme poimandres")
 -- 	end,
 -- }
---
---
--- return {
--- 	{
--- 		"folke/tokyonight.nvim",
--- 		lazy = false,
--- 		priority = 1000,
--- 		opts = {},
--- 		config = function()
--- 			vim.cmd([[
--- colorscheme tokyonight-night
--- ]])
--- 		end,
--- 	},
--- }
+
+
+return {
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+		config = function()
+			vim.cmd([[
+colorscheme tokyonight-night
+]])
+		end,
+	},
+}
 -- return {
 -- 	--
 -- 	"oxfist/night-owl.nvim",
