@@ -6,8 +6,13 @@ return {
     vim.o.timeoutlen = 500
   end,
   opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+    spec = {
+      { "<leader>c", group = "Copilot" },
+      { "<leader>ca", group = "Copilot Agent" },
+      { "<leader>l", group = "LSP" },
+      { "<leader>f", group = "Find/Files" },
+      { "<leader>h", group = "Git Hunks" },
+      { "<leader>s", group = "Splits" },
+    },
   },
 }

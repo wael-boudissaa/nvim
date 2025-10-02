@@ -123,7 +123,7 @@ return {
             end, opts)
             -- Code actions
             vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
-            vim.keymap.set({ "n", "v" }, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
+            vim.keymap.set({ "n", "v" }, "<leader>cv", function() vim.lsp.buf.code_action() end, opts)
 
             -- Diagnostics
             vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
@@ -132,7 +132,7 @@ return {
             vim.keymap.set("n", "<leader>q", function() vim.diagnostic.setloclist() end, opts)
 
             -- Format
-            vim.keymap.set("n", "<leader>fm", function() vim.lsp.buf.format({ async = true }) end, opts)
+            vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, opts)
 
             -- If telescope is available, set up telescope-based keymaps
             local has_telescope, telescope = pcall(require, "telescope.builtin")

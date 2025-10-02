@@ -1,4 +1,70 @@
 -- return {
+--     "tiagovla/tokyodark.nvim",
+--     opts = {
+--         -- custom options here
+--     },
+--     config = function(_, opts)
+--         require("tokyodark").setup(opts) -- calling setup is optional
+--         vim.cmd [[colorscheme tokyodark]]
+--     end,
+-- }
+-- return {
+--   {
+--     "olimorris/onedarkpro.nvim",
+--     priority = 1000, -- Ensure it loads first
+--     lazy = false,    -- Load on startup
+--     config = function()
+--       vim.cmd("colorscheme onedark")
+--     end,
+--   },
+-- }
+-- Add a custom keybinding to toggle the colorscheme
+
+return {
+    "vague2k/vague.nvim",
+    lazy = false,  -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other plugins
+    config = function()
+        -- NOTE: you do not need to call setup if you don't want to.
+        require("vague").setup({
+            -- optional configuration here
+        })
+        vim.cmd("colorscheme vague")
+    end
+}
+-- return {
+--   {
+--     "scottmckendry/cyberdream.nvim",
+--     lazy = false,
+--     priority = 1000,
+--     config = function()
+--       require("cyberdream").setup({
+--         variant = "auto", -- needed for :CyberdreamToggleMode to work
+--         -- All other options stay default
+--         colors = {
+--           green = "#00cc00", -- ✅ just darken the green slightly
+--         },
+--       })
+--
+--       vim.cmd("colorscheme cyberdream")
+--
+--       -- Toggle with <leader>tt
+--       vim.keymap.set("n", "<leader>tt", ":CyberdreamToggleMode<CR>", { noremap = true, silent = true, desc = "Toggle Cyberdream Theme" })
+--
+--       -- Notify user on theme change
+--       vim.api.nvim_create_autocmd("User", {
+--         pattern = "CyberdreamToggleMode",
+--         callback = function(event)
+--           vim.notify("Switched to " .. (event.data or "unknown") .. " mode!", vim.log.levels.INFO, { title = "Cyberdream" })
+--         end,
+--       })
+--     end,
+--   },
+-- }
+
+-- somewhere in your config:
+
+-- return {
 -- 	"sainnhe/gruvbox-material",
 -- 	lazy = false,
 -- 	priority = 1000,
@@ -202,19 +268,20 @@
 -- }
 
 
-return {
-	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {},
-		config = function()
-			vim.cmd([[
-colorscheme tokyonight-night
-]])
-		end,
-	},
-}
+-- return {
+--     {
+--         "folke/tokyonight.nvim",
+--         lazy = false,
+--         priority = 1000,
+--         opts = {},
+--         config = function()
+--             vim.cmd([[
+-- colorscheme tokyonight-night
+-- ]])
+--         end,
+--     },
+-- }
+
 -- return {
 -- 	--
 -- 	"oxfist/night-owl.nvim",
