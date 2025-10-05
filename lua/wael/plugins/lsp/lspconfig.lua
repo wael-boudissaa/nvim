@@ -77,11 +77,11 @@ return {
             'eslint_d',
         }
 
-        -- Set up mason-lspconfig
-        require('mason-lspconfig').setup({
-            ensure_installed = servers,
-            automatic_installation = true,
-        })
+        -- Initialize lsp-zero WITHOUT preset
+        local lsp = require('lsp-zero')
+
+        -- Get capabilities from cmp-nvim-lsp
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
         -- Set up mason-tool-installer
         require('mason-tool-installer').setup({
@@ -90,16 +90,8 @@ return {
             run_on_start = true,
         })
 
-        -- Initialize lsp-zero
-        local lsp = require('lsp-zero').preset({
-            name = 'minimal',
-            set_lsp_keymaps = true,
-            manage_nvim_cmp = true,
-            suggest_lsp_servers = false,
-        })
-
-        -- Add custom keymaps for LSP
-        lsp.on_attach(function(client, bufnr)
+        -- Define on_attach function for keymaps
+        local function on_attach(client, bufnr)
             local opts = { buffer = bufnr, silent = true, noremap = true }
 
             -- Navigation
@@ -140,13 +132,115 @@ return {
                 vim.keymap.set("n", "gR", function() telescope.lsp_references() end, opts)
                 vim.keymap.set("n", "<leader>D", function() telescope.diagnostics({ bufnr = 0 }) end, opts)
             end
-        end)
+        end
 
-        -- Configure specific language servers
+        -- Update mason-lspconfig handlers to use on_attach
+        require('mason-lspconfig').setup({
+            ensure_installed = servers,
+            automatic_enable = false,
+            handlers = {
+                -- Default handler
+                function(server_name)
+                    require('lspconfig')[server_name].setup({
+                        capabilities = capabilities,
+                        on_attach = on_attach,
+                    })
+                end,
+                -- Skip gopls in mason handlers (configured explicitly later since it's installed outside Mason)
+                ['gopls'] = function() end,
+                -- Custom handler for lua_ls
+                ['lua_ls'] = function()
+                    require('lspconfig').lua_ls.setup({
+                        capabilities = capabilities,
+                        on_attach = on_attach,
+                        settings = {
+                            Lua = {
+                                diagnostics = {
+                                    globals = { 'vim' },
+                                },
+                                workspace = {
+                                    library = vim.api.nvim_get_runtime_file("", true),
+                                    checkThirdParty = false,
+                                },
+                                telemetry = {
+                                    enable = false,
+                                },
+                            },
+                        },
+                    })
+                end,
+                -- Custom handler for tailwindcss
+                ['tailwindcss'] = function()
+                    require('lspconfig').tailwindcss.setup({
+                        capabilities = capabilities,
+                        on_attach = on_attach,
+                        filetypes = {
+                            "html", "css", "scss", "javascript", "javascriptreact",
+                            "typescript", "typescriptreact", "svelte", "vue",
+                        },
+                        init_options = {
+                            userLanguages = {
+                                eelixir = "html", eruby = "html", heex = "html",
+                                svelte = "html", twig = "html",
+                            },
+                        },
+                        settings = {
+                            tailwindCSS = {
+                                experimental = {
+                                    classRegex = {
+                                        "tw`([^`]*)", "tw=\"([^\"]*)", "tw={\"([^\"}]*)",
+                                        "tw\\.\\w+`([^`]*)", "class(Name)?=\"([^\"]*)",
+                                        "class(Name)?={`([^`}]+)`",
+                                    }
+                                },
+                                validate = true,
+                                lint = {
+                                    cssConflict = "warning",
+                                    invalidApply = "error",
+                                    invalidScreen = "error",
+                                    invalidVariant = "error",
+                                    invalidConfigPath = "error",
+                                    invalidTailwindDirective = "error",
+                                    recommendedVariantOrder = "warning",
+                                },
+                            }
+                        },
+                    })
+                end,
+            },
+        })
 
-        -- gopls (Go)
-        lsp.configure('gopls', {
-            cmd = { "gopls" },
+        -- Set up Dart/Flutter support via flutter-tools
+        require('flutter-tools').setup({
+            lsp = {
+                on_attach = function(client, bufnr)
+                    -- Call our on_attach function
+                    on_attach(client, bufnr)
+
+                    -- Flutter-specific keymaps
+                    local opts = { buffer = bufnr, silent = true, noremap = true }
+                    vim.keymap.set("n", "<leader>fr", ":FlutterRun<CR>", opts)
+                    vim.keymap.set("n", "<leader>fd", ":FlutterDevices<CR>", opts)
+                    vim.keymap.set("n", "<leader>fe", ":FlutterEmulators<CR>", opts)
+                    vim.keymap.set("n", "<leader>fq", ":FlutterQuit<CR>", opts)
+                end,
+                capabilities = capabilities,
+            },
+            debugger = {
+                enabled = true,
+                run_via_dap = true,
+            },
+            flutter_path = os.getenv("FLUTTER_HOME") or nil,
+            widget_guides = {
+                enabled = true,
+            },
+        })
+
+        -- Explicitly setup gopls (since it's installed outside Mason)
+        require('lspconfig').gopls.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            cmd = { vim.fn.expand("~/go/bin/gopls") },
             filetypes = { "go", "gomod", "gowork", "gotmpl" },
             root_dir = require('lspconfig').util.root_pattern("go.work", "go.mod", ".git"),
             settings = {
@@ -163,160 +257,7 @@ return {
             },
         })
 
-        -- golangci-lint
-        lsp.configure('golangci_lint_ls', {
-            filetypes = { "go", "gomod" },
-            root_dir = require('lspconfig').util.root_pattern(".git", "go.mod"),
-            init_options = {
-                command = {
-                    "golangci-lint",
-                    "run",
-                    "--output-format",
-                    "json"
-                },
-            },
-        })
-
-        -- lua_ls (Lua)
-        lsp.configure('lua_ls', {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = { 'vim' },
-                    },
-                    workspace = {
-                        library = vim.api.nvim_get_runtime_file("", true),
-                        checkThirdParty = false,
-                    },
-                    telemetry = {
-                        enable = false,
-                    },
-                },
-            },
-        })
-        lsp.configure('ts_ls', {
-            filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-            -- You can add more config here if needed
-        })
-        -- Set up nvim-cmp
-        local cmp = require('cmp')
-        local luasnip = require('luasnip')
-
-        -- Load snippets
-        require('luasnip.loaders.from_vscode').lazy_load()
-
-        cmp.setup({
-            snippet = {
-                expand = function(args)
-                    luasnip.lsp_expand(args.body)
-                end,
-            },
-            mapping = cmp.mapping.preset.insert({
-                ['<C-Space>'] = cmp.mapping.complete(),
-                ['<CR>'] = cmp.mapping.confirm({ select = false }),
-                ['<Tab>'] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_next_item()
-                    elseif luasnip.expand_or_jumpable() then
-                        luasnip.expand_or_jump()
-                    else
-                        fallback()
-                    end
-                end, { 'i', 's' }),
-                ['<S-Tab>'] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_prev_item()
-                    elseif luasnip.jumpable(-1) then
-                        luasnip.jump(-1)
-                    else
-                        fallback()
-                    end
-                end, { 'i', 's' }),
-            }),
-            sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'luasnip' },
-                { name = 'buffer' },
-                { name = 'path' },
-            }),
-        })
-
-        -- Set up Dart/Flutter support via flutter-tools
-        require('flutter-tools').setup({
-            lsp = {
-                on_attach = function(client, bufnr)
-                    -- Call lsp-zero's default on_attach function
-                    lsp.on_attach(client, bufnr)
-
-                    -- Flutter-specific keymaps
-                    local opts = { buffer = bufnr, silent = true, noremap = true }
-                    vim.keymap.set("n", "<leader>fr", ":FlutterRun<CR>", opts)
-                    vim.keymap.set("n", "<leader>fd", ":FlutterDevices<CR>", opts)
-                    vim.keymap.set("n", "<leader>fe", ":FlutterEmulators<CR>", opts)
-                    vim.keymap.set("n", "<leader>fq", ":FlutterQuit<CR>", opts)
-                end,
-                capabilities = lsp.get_capabilities(),
-            },
-            debugger = {
-                enabled = true,
-                run_via_dap = true,
-            },
-            flutter_path = os.getenv("FLUTTER_HOME") or nil,
-            widget_guides = {
-                enabled = true,
-            },
-        })
-
-  lsp.configure('tailwindcss', {
-            filetypes = {
-                "html",
-                "css",
-                "scss",
-                "javascript",
-                "javascriptreact",
-                "typescript",
-                "typescriptreact",
-                "svelte",
-                "vue",
-            },
-            init_options = {
-                userLanguages = {
-                    eelixir = "html",
-                    eruby = "html",
-                    heex = "html",
-                    svelte = "html",
-                    twig = "html",
-                },
-            },
-            settings = {
-                tailwindCSS = {
-                    experimental = {
-                        classRegex = {
-                            "tw`([^`]*)", -- tw`...`
-                            "tw=\"([^\"]*)", -- tw="..."
-                            "tw={\"([^\"}]*)", -- tw={"..."}
-                            "tw\\.\\w+`([^`]*)", -- tw.xxx`...`
-                            "class(Name)?=\"([^\"]*)", -- class="..."
-                            "class(Name)?={`([^`}]+)`", -- class={`...`}
-                        }
-                    },
-                    validate = true,
-                    lint = {
-                        cssConflict = "warning",
-                        invalidApply = "error",
-                        invalidScreen = "error",
-                        invalidVariant = "error",
-                        invalidConfigPath = "error",
-                        invalidTailwindDirective = "error",
-                        recommendedVariantOrder = "warning",
-                    },
-                }
-            }
-        })
-        -- Set up LSP
-        lsp.setup()
-
-        -- Configure diagnostics appearance (after lsp.setup())
+        -- Configure diagnostics appearance
         vim.diagnostic.config({
             virtual_text = false,
             signs = true,

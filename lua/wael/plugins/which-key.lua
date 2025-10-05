@@ -12,7 +12,9 @@ return {
       { "<leader>l", group = "LSP" },
       { "<leader>f", group = "Find/Files" },
       { "<leader>h", group = "Git Hunks" },
-      { "<leader>s", group = "Splits" },
+      { "<leader>s", group = "Splits/Search/Spectre" },
+      { "<leader>x", group = "Trouble/Diagnostics" },
+      { "<leader>q", group = "Session" },
     },
   },
 }

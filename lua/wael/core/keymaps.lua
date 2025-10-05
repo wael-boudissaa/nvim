@@ -1,5 +1,5 @@
 -- Set leader key to space
-vim.env.PATH = vim.env.PATH .. ':/home/wael-boudissa/.npm-global/bin'
+vim.env.PATH = vim.env.PATH .. ':/home/wael-boudissa/.npm-global/bin:/home/wael-boudissa/go/bin'
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
@@ -60,16 +60,6 @@ keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 
 -- Split window management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
-keymap.set("n", "<leader>sx", function()
-	if vim.fn.winnr("$") > 1 then
-		vim.cmd("close")
-	else
-		print("Cannot close the last window")
-	end
-end, { desc = "Close current split" })
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })

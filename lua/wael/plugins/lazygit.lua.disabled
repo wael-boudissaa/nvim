@@ -1,0 +1,38 @@
+return {
+	"kdheepak/lazygit.nvim",
+	cmd = {
+		"LazyGit",
+		"LazyGitConfig",
+		"LazyGitCurrentFile",
+		"LazyGitFilter",
+		"LazyGitFilterCurrentFile",
+	},
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+	},
+	keys = {
+		{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "Open LazyGit" },
+		{
+			"<leader>lG",
+			function()
+				-- Debug: open lazygit directly in terminal to see errors
+				vim.cmd("terminal lazygit")
+			end,
+			desc = "Open LazyGit (debug mode)",
+		},
+	},
+	config = function()
+		-- Configure floating window
+		vim.g.lazygit_floating_window_scaling_factor = 0.9 -- Scale to 90% of screen
+		vim.g.lazygit_floating_window_winblend = 0 -- No transparency
+		vim.g.lazygit_floating_window_use_plenary = 0 -- Use native floating window
+
+		-- Ensure shell is set (critical for terminal to work)
+		if vim.o.shell == "" or vim.o.shell == nil then
+			vim.o.shell = "/bin/bash"
+		end
+
+		-- Set explicit lazygit path
+		vim.g.lazygit_binary = "/usr/local/bin/lazygit"
+	end,
+}
